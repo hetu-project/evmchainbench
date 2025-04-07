@@ -16,6 +16,12 @@ func (g *Generator) GenerateSimple() (map[int]types.Transactions, error) {
 	}
 
 	g.prepareSenders()
+	// Ensure all senders' nonces are up to date before generating transactions
+	for _, sender := range g.Senders {
+		if err := sender.SyncNonce(); err != nil {
+			return nil, err
+		}
+	}
 
 	value := big.NewInt(10000000000000) // 1/100,000 ETH
 
@@ -26,7 +32,11 @@ func (g *Generator) GenerateSimple() (map[int]types.Transactions, error) {
 		go func(index int, sender *account.Account) {
 			txs := types.Transactions{}
 			for _, recipient := range g.Recipients {
-				tx, err := GenerateSimpleTransferTx(sender.PrivateKey, recipient, sender.GetNonce(), g.ChainID, g.GasPrice, value, g.EIP1559)
+				// Use Account's GetNonce method to get thread-safe nonce,
+				// TODO: Current lock granularity has room for optimization
+				// TODO: Pay attention to the logic of adding nonce after transaction failure
+				nonce := sender.GetNonce()
+				tx, err := GenerateSimpleTransferTx(sender.PrivateKey, recipient, nonce, g.ChainID, g.GasPrice, value, g.EIP1559)
 				if err != nil {
 					ch <- err
 					return
