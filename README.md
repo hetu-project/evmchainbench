@@ -34,4 +34,4 @@ The performance differences highlight the impact of architectural and implementa
 - **0G** demonstrates the advantages of refining critical components like `estimateGas` to improve transaction throughput.
 - **Evmos** achieves high ERC20 and Uniswap TPS through increased block size, while **Kava** lags due to older CometBFT and less efficient gas estimation.
 - **Sei’s extensive customizations** set it apart from other chains, making direct comparisons to standard Cosmos-based architectures inappropriate.
-- **Hetu** Hetu's DAG-based parallel processing offers a promising approach for high-throughput applications
+- **Hetu**'s DAG-based parallel processing offers a promising approach for high-throughput applications
