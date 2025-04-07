@@ -26,6 +26,12 @@ func (g *Generator) GenerateERC20() (map[int]types.Transactions, error) {
 	contractAddressStr := contractAddress.Hex()
 
 	g.prepareSenders()
+	// Ensure all senders' nonces are up to date before generating transactions
+	for _, sender := range g.Senders {
+		if err := sender.SyncNonce(); err != nil {
+			return nil, err
+		}
+	}
 
 	g.prepareERC20(contractAddressStr)
 
@@ -56,10 +62,12 @@ func (g *Generator) GenerateERC20() (map[int]types.Transactions, error) {
 		go func(index int, sender *account.Account) {
 			txs := types.Transactions{}
 			for _, recipient := range g.Recipients {
+				// Use thread-safe GetNonce method to get nonce
+				nonce := sender.GetNonce()
 				tx := GenerateContractCallingTx(
 					sender.PrivateKey,
 					contractAddressStr,
-					sender.GetNonce(),
+					nonce,
 					g.ChainID,
 					g.GasPrice,
 					estimateGas,
