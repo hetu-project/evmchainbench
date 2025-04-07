@@ -184,7 +184,7 @@ func (g *Generator) prepareSenders() {
 	defer client.Close()
 
 	value := new(big.Int)
-	value.Mul(big.NewInt(1000000000000000000), big.NewInt(100)) // 100 Eth
+	value.Mul(big.NewInt(1000000000000000000), big.NewInt(6)) // 100 Eth
 
 	txs := types.Transactions{}
 

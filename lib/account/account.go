@@ -35,6 +35,7 @@ func NewAccount(client *ethclient.Client) (*Account, error) {
 		Nonce:      nonce,
 		Address:    addr,
 		PrivateKey: pk,
+		client:     client,
 	}, nil
 }
 
@@ -55,6 +56,7 @@ func CreateFaucetAccount(client *ethclient.Client, privateKey string) (*Account,
 		Nonce:      nonce,
 		Address:    addr,
 		PrivateKey: pk,
+		client:     client,
 	}, nil
 }
 
