@@ -1,13 +1,18 @@
 ## Key Observations and Insights
 
-### 1. Cosmos+Ethermint vs. Cosmos+Beacon API+Geth/Reth
+### 1. Impact of Architectural Choices on Performance
 
 - **DAG-based Consensus Architecture (Hetu)**
-combines CometBFT with a customized DAG-based Narwhal consensus implementation
-Enables parallel transaction processing, potentially offering higher throughput than sequential models
-- **0G, Evmos, and Kava** use Cosmos+Ethermint, where each Ethereum transaction is wrapped into a Cosmos transaction for consensus processing. This introduces additional overhead compared to directly processing Ethereum transactions in an EVM.
-- **Bera** adopts Cosmos+Beacon API+Geth/Reth, wrapping an entire Ethereum block payload into a single Cosmos transaction. This significantly reduces the transaction load on the consensus layer, resulting in better performance across all test categories.
+    - combines CometBFT with a customized DAG-based Narwhal consensus implementation
+    - Enables parallel transaction processing, potentially offering higher throughput than sequential models
 
+- **Cosmos+Ethermint Architecture (0G, Evmos, Kava)** 
+    - Each Ethereum transaction is wrapped into a Cosmos transaction for consensus processing
+    - This approach introduces additional overhead, reducing overall processing efficiency
+
+- **Cosmos+Beacon API+Geth/Reth Architecture (Bera)** 
+    - Wraps an entire Ethereum block payload into a single Cosmos transaction
+    - Significantly reduces consensus layer transaction load, performing better across all test categories
 
 ### 2. Sei's Unique Modifications
 - **Sei** has extensively modified Cosmos, Tendermint, and Go-Ethereum. These deep changes make it fundamentally different from standard Cosmos chains like 0G, Evmos, and Kava. As such, Sei's performance cannot be directly compared to other chains in this analysis.
